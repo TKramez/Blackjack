@@ -1,4 +1,4 @@
-package Blackjack;
+package blackjack;
 
 public class Player {
 	
