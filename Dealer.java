@@ -1,4 +1,4 @@
-package blackjack;
+package Blackjack;
 
 public class Dealer extends Player {
 	
