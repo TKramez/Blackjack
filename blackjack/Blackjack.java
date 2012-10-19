@@ -1,3 +1,5 @@
+package blackjack;
+
 public class Blackjack {
 	/**
 	 * @param args
