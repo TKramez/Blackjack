@@ -1,10 +1,10 @@
 package blackjack;
 
-public class Blackjack {
+public class Hand {
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		System.out.println("hello");
+		
 	}
 }
