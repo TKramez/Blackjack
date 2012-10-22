@@ -16,6 +16,64 @@ public class Player {
 		this.name = name;
 		wallet = 100;
 	}
+	
+	public void playHand(Deck deck) {
+		boolean bust = false,
+				invalidMove;
+		String playerAction;
+
+		Hand hand = new Hand(deck.getNextCard(), deck.getNextCard());
+		this.addHand(hand);
+
+		while (!bust) {
+			invalidMove = true;
+			System.out.println(this.getName() + " here is your hand: ");
+			this.getHand().printHand();
+
+			if (this.canSplit())
+				System.out.print("What would you like to do (Split, Double, Stay, Hit)?  ");
+			else
+				System.out.print("What would you like to do (Double, Stay, Hit)?  ");
+
+			playerAction = Game.scan.next();
+
+			while (invalidMove) {			
+				if(playerAction.equalsIgnoreCase("split")) {
+					if (this.canSplit()) {
+						this.addHand(this.getHand().split());
+						invalidMove = false;
+					}
+					else
+						System.out.println("Sorry, this hand can not be split.");
+				}
+				else if(playerAction.equalsIgnoreCase("double")) {
+					invalidMove = false;
+				}
+				else if(playerAction.equalsIgnoreCase("stay")) {
+					return;
+				}
+				else if(playerAction.equalsIgnoreCase("hit")) {
+					Card draw;
+					this.getHand().addCard(draw = deck.getNextCard());
+					System.out.println("You drew " + draw.toString());
+					invalidMove = false;
+				}
+				else {
+					System.out.print("Invalid choice, choose again:  ");
+					playerAction = Game.scan.next();
+				}
+			}
+			
+			if (this.getHand().getPoints() > 21) {
+				bust = true;
+				System.out.println("BUST!");
+			}
+			else if (this.getHand().getPoints() == 21) {
+				System.out.println("21!");
+				return;
+			}
+		}
+	}
 
 	public String getName() {
 		return name;
@@ -26,7 +84,8 @@ public class Player {
 	}
 
 	public void removeHand() {
-		myHand.remove(1);
+		while (myHand.size() > 0)
+			myHand.remove(0);
 	}
 
 	public Hand getHand() {

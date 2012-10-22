@@ -29,5 +29,9 @@ public class Card {
 
 		return faceValue;
 	}
+	
+	public String toString() {
+		return getNumber() + " " + getSuit();
+	}
 
 }

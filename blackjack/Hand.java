@@ -3,17 +3,19 @@ package blackjack;
 import java.util.Vector;
 
 public class Hand {
-	private Vector<Card> playerHand = new Vector<Card>();
+	private Vector<Card> playerHand;
 
 	public Hand() {
-
+		playerHand = new Vector<Card>();
 	}
 
 	public Hand(Card one) {
+		playerHand = new Vector<Card>();
 		playerHand.add(one);
 	}
 
 	public Hand(Card one, Card two) {
+		playerHand = new Vector<Card>();
 		playerHand.add(one);
 		playerHand.add(two);
 	}
@@ -43,14 +45,21 @@ public class Hand {
 
 		return newHand;
 	}
+	
+	public boolean hasAce() {
+		for (Card h : playerHand) {
+			if (h.getSuit().equalsIgnoreCase("ace"))
+				return true;
+		}
+		return false;
+	}
 
 	public void addCard(Card a) {
-
 		playerHand.add(a);
 	}
 
 	public void printHand() {
 		for (int i = 0; i < playerHand.size(); i++)
-			System.out.println(playerHand.get(i).getNumber() + " " + playerHand.get(i).getSuit());
+			System.out.println(playerHand.get(i).toString());
 	}
 }

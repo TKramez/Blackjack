@@ -5,10 +5,11 @@ import java.util.Random;
 
 
 public class Deck {
-	private Vector<Card> playingDeck = new Vector<Card>();
+	private Vector<Card> playingDeck;
 
 	public Deck() {
-
+		playingDeck = new Vector<Card>();
+		shuffleDeck();
 	}
 
 	public void shuffleDeck() {
@@ -44,14 +45,14 @@ public class Deck {
 				else
 					cardType = null;
 
-				playingDeck.add(new Card(cardType,suit));
+				playingDeck.add(new Card(cardType ,suit));
 			}
 		}
 	}
 
 	public Card getNextCard() {
 		Random rand = new Random();
-		int randomCard = rand.nextInt(playingDeck.size() + 1);
+		int randomCard = rand.nextInt(playingDeck.size());
 
 		Card nextCard = playingDeck.get(randomCard);
 		playingDeck.remove(randomCard);
