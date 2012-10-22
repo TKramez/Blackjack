@@ -1,10 +1,11 @@
-import java.util.ArrayList;
+package blackjack;
 
+import java.util.Vector;
 
 public class Player {
 	private String name;
 	private int wallet;
-	private ArrayList<Hand> myHand = new ArrayList<Hand>();
+	private Vector<Hand> myHand = new Vector<Hand>();
 
 	public Player() {
 		this.name = "Joe";

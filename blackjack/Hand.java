@@ -1,8 +1,9 @@
-import java.util.ArrayList;
+package blackjack;
 
+import java.util.Vector;
 
 public class Hand {
-	private ArrayList<Card> playerHand = new ArrayList<Card>();
+	private Vector<Card> playerHand = new Vector<Card>();
 
 	public Hand() {
 

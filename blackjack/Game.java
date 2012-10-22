@@ -1,3 +1,5 @@
+package blackjack;
+
 /*
  * stuff we need to add
  * 
@@ -12,13 +14,12 @@
 
 import java.util.Scanner;
 
-
 public class Game {
 	static Scanner userIn = new Scanner(System.in);
 	static Deck deck1 = new Deck();
 
 	public static void main(String[] args) {
-		Dealer deal = new Dealer();
+		Dealer dealer = new Dealer();
 		Player playerList[] = getPlayerList();
 		String playAgainTemp;
 		boolean playAgain = true;

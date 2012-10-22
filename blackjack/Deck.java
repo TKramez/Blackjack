@@ -1,9 +1,11 @@
-import java.util.ArrayList;
+package blackjack;
+
+import java.util.Vector;
 import java.util.Random;
 
 
 public class Deck {
-	private ArrayList<Card> playingDeck = new ArrayList<Card>();
+	private Vector<Card> playingDeck = new Vector<Card>();
 
 	public Deck() {
 
