@@ -30,7 +30,7 @@ public class Game {
 	}
 
 	public static void main(String[] args) {
-		Vector<Player> players = getPlayerList();
+		Vector<Player> players = makePlayerList();
 		Dealer dealer = new Dealer();
 		
 		String temp = "";
@@ -48,8 +48,12 @@ public class Game {
 			
 		} while (playAgain);
 	}
+	
+	public Vector<Player> getPlayerList() {
+		return players;
+	}
 
-	public static Vector<Player> getPlayerList() {
+	public static Vector<Player> makePlayerList() {
 		final int MAX_PLAYERS = 3, MIN_PLAYERS = 1;
 		Vector<Player> playerList = new Vector<Player>();
 		int numPlayers;

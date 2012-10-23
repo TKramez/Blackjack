@@ -62,7 +62,7 @@ public class Deck {
 
 	public void deal(Game game) {
 		Hand hand;
-		for (Player p : Game.getPlayerList()) {
+		for (Player p : game.getPlayerList()) {
 			hand = new Hand(getNextCard());
 			p.addHand(hand);
 		}	
@@ -70,7 +70,7 @@ public class Deck {
 		hand = new Hand(getNextCard());
 		game.getDealer().addHand(hand);
 		
-		for (Player p : Game.getPlayerList()) {
+		for (Player p : game.getPlayerList()) {
 			p.getHand().addCard(getNextCard());
 		}
 		
