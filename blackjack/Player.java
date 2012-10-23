@@ -4,17 +4,20 @@ import java.util.Vector;
 
 public class Player {
 	private String name;
-	private int wallet;
+	private double wallet;
+	private double bet;
 	private Vector<Hand> myHand = new Vector<Hand>();
 
 	public Player() {
 		this.name = "Joe";
-		wallet = 100;
+		wallet = 100.00;
+		bet = 0.0;
 	}
 
 	public Player(String name) {
 		this.name = name;
-		wallet = 100;
+		wallet = 100.00;
+		bet = 0.0;
 	}
 	
 	public void playHand(Deck deck) {
@@ -96,15 +99,23 @@ public class Player {
 		return myHand.size();
 	}
 
-	public int getWallet() {
+	public double getWallet() {
 		return wallet;
 	}
+	
+	public double getBet() {
+		return bet;
+	}
+	
+	public void setBet(int bet) {
+		this.bet = bet;
+	}
 
-	public void addToWallet(int winnings) {
+	public void addToWallet(double winnings) {
 		wallet += winnings;
 	}
 
-	public void takeFromWallet(int lose) {
+	public void takeFromWallet(double lose) {
 		wallet -= lose;
 	}
 	

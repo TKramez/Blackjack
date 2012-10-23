@@ -3,7 +3,6 @@ package blackjack;
 /*
  * stuff we need to add
  * 
- * -place bet
  * -rules for "double bet"
  * -splitting hand
  * -add payout method
@@ -25,7 +24,7 @@ public class Game {
 		this.deck = deck;
 		this.players = players;
 		this.dealer = dealer;
-		//listPlayers();
+				
 		play();
 	}
 
@@ -100,6 +99,11 @@ public class Game {
 
 		deck.shuffleDeck();
 
+		for (Player p : players) {
+			System.out.print(p.getName() + ", how much do you want to bet?   ");
+			p.setBet(scan.nextInt());
+		}
+		
 		deck.deal(this);
 		
 		System.out.println(dealer.getName() + "'s card is " + dealer.getHand().getCard(0) + ".");
@@ -112,15 +116,25 @@ public class Game {
 		for (Player p : players) {
 			if (p.getHand().getPoints() > 21) {
 				System.out.println(p.getName() + " loses!");
+				p.takeFromWallet(p.getBet());
 			} else if (dealer.getHand().getPoints() > 21) {
 				System.out.println(p.getName() + " wins!");
+				p.addToWallet(p.getBet());
 			} else if (p.getHand().getPoints() > dealer.getHand().getPoints()) {
 				System.out.println(p.getName() + " wins!");
+				if (p.getHand().getPoints() == 21)
+				{
+					p.addToWallet(p.getBet() / 2.0);
+				}
+				else
+					p.addToWallet(p.getBet());
 			} else if (p.getHand().getPoints() == dealer.getHand().getPoints()) {
 				System.out.println(p.getName() + " pushes.");
 			} else {
 				System.out.println(p.getName() + " loses!");
+				p.takeFromWallet(p.getBet());
 			}
+			System.out.println(p.getName() + ", you have $" + p.getWallet() + " left.");
 		}
 	}
 }
