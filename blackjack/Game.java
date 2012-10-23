@@ -39,7 +39,7 @@ public class Game {
 		do {
 			new Game(new Deck(), dealer, players);
 			
-			System.out.print("Would you like to play again (yes or no)? " );
+			System.out.print("Would you like to play again (yes or no)? ");
 			temp = scan.next();
 			
 			if (temp.equalsIgnoreCase("no")) {
@@ -82,6 +82,10 @@ public class Game {
 			System.out.println(s.getName());
 		}
 	}
+	
+	public Dealer getDealer() {
+		return dealer;
+	}
 
 	private void play() {
 		for (Player p : players) {
@@ -92,6 +96,10 @@ public class Game {
 
 		deck.shuffleDeck();
 
+		deck.deal(this);
+		
+		System.out.println(dealer.getName() + "'s card is " + dealer.getHand().getCard(0) + ".");
+		
 		for (Player p : players) {
 			p.playHand(deck);
 		}
@@ -104,6 +112,8 @@ public class Game {
 				System.out.println(p.getName() + " wins!");
 			} else if (p.getHand().getPoints() > dealer.getHand().getPoints()) {
 				System.out.println(p.getName() + " wins!");
+			} else if (p.getHand().getPoints() == dealer.getHand().getPoints()) {
+				System.out.println(p.getName() + " pushes.");
 			} else {
 				System.out.println(p.getName() + " loses!");
 			}

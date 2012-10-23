@@ -60,4 +60,20 @@ public class Deck {
 		return nextCard;
 	}
 
+	public void deal(Game game) {
+		Hand hand;
+		for (Player p : Game.getPlayerList()) {
+			hand = new Hand(getNextCard());
+			p.addHand(hand);
+		}	
+		
+		hand = new Hand(getNextCard());
+		game.getDealer().addHand(hand);
+		
+		for (Player p : Game.getPlayerList()) {
+			p.getHand().addCard(getNextCard());
+		}
+		
+		game.getDealer().getHand().addCard(getNextCard());
+	}
 }

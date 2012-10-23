@@ -65,4 +65,8 @@ public class Hand {
 		for (int i = 0; i < playerHand.size(); i++)
 			System.out.println(playerHand.get(i).toString());
 	}
+	
+	public Card getCard(int num) {
+		return playerHand.get(num);
+	}
 }
