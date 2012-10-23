@@ -45,7 +45,7 @@ public class Deck {
 				else
 					cardType = null;
 
-				playingDeck.add(new Card(cardType ,suit));
+				playingDeck.add(new Card(cardType, suit));
 			}
 		}
 	}

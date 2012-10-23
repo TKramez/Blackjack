@@ -18,7 +18,7 @@ public class Dealer extends Player {
 		this.addHand(hand);
 
 		while (!bust) {
-			System.out.println(this.getName() + "'s hand.");
+			System.out.println(this.getName() + "'s hand:");
 			this.getHand().printHand();
 
 			while (!bust) {

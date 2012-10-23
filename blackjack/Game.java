@@ -5,8 +5,7 @@ package blackjack;
  * 
  * -place bet
  * -rules for "double bet"
- * -check if player won
- * -add dealer implementation
+ * -splitting hand
  * -add payout method
  * -input error checking
  */

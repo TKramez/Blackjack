@@ -26,6 +26,9 @@ public class Hand {
 		for (int i = 0; i < playerHand.size(); i++) {
 			points += playerHand.get(i).getFaceValue();
 		}
+		
+		if (points > 21 && this.hasAce())
+			points -= 10;
 
 		return points;
 	}
@@ -48,7 +51,7 @@ public class Hand {
 	
 	public boolean hasAce() {
 		for (Card h : playerHand) {
-			if (h.getSuit().equalsIgnoreCase("ace"))
+			if (h.getNumber().equalsIgnoreCase("ace"))
 				return true;
 		}
 		return false;
