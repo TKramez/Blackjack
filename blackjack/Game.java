@@ -3,7 +3,8 @@ package blackjack;
 /*
  * stuff we need to add
  * 
- * -splitting hand
+ * -splitting hand works, but we need to make it so the game
+ * 	actually runs through the players' multiple hands.
  * -input error checking
  * -make it so when player wallet = 0, game is over.
  * -make it so a player cannot bet more than they have. Also,
