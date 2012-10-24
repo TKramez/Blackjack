@@ -69,4 +69,8 @@ public class Hand {
 	public Card getCard(int num) {
 		return playerHand.get(num);
 	}
+	
+	public int sizeOfHand() {
+		return playerHand.size();
+	}
 }

@@ -3,10 +3,12 @@ package blackjack;
 /*
  * stuff we need to add
  * 
- * -rules for "double bet"
  * -splitting hand
- * -add payout method
  * -input error checking
+ * -make it so when player wallet = 0, game is over.
+ * -make it so a player cannot bet more than they have. Also,
+ *  check to see if they have enough money to double, split,
+ *  or both.
  */
 
 
@@ -24,7 +26,6 @@ public class Game {
 		this.deck = deck;
 		this.players = players;
 		this.dealer = dealer;
-				
 		play();
 	}
 
@@ -79,13 +80,6 @@ public class Game {
 		return playerList;
 	}
 	
-
-	private void listPlayers() {
-		for (Player s : players) {
-			System.out.println(s.getName());
-		}
-	}
-	
 	public Dealer getDealer() {
 		return dealer;
 	}
@@ -117,20 +111,24 @@ public class Game {
 			if (p.getHand().getPoints() > 21) {
 				System.out.println(p.getName() + " loses!");
 				p.takeFromWallet(p.getBet());
-			} else if (dealer.getHand().getPoints() > 21) {
+			}
+			else if (dealer.getHand().getPoints() > 21) {
 				System.out.println(p.getName() + " wins!");
 				p.addToWallet(p.getBet());
-			} else if (p.getHand().getPoints() > dealer.getHand().getPoints()) {
+			} 
+			else if (p.getHand().getPoints() > dealer.getHand().getPoints()) {
 				System.out.println(p.getName() + " wins!");
-				if (p.getHand().getPoints() == 21)
+				if (p.getHand().getPoints() == 21 && p.getHand().sizeOfHand() == 2)
 				{
-					p.addToWallet(p.getBet() / 2.0);
+					p.addToWallet(p.getBet() * 1.5);
 				}
 				else
 					p.addToWallet(p.getBet());
-			} else if (p.getHand().getPoints() == dealer.getHand().getPoints()) {
+			} 
+			else if (p.getHand().getPoints() == dealer.getHand().getPoints()) {
 				System.out.println(p.getName() + " pushes.");
-			} else {
+			} 
+			else {
 				System.out.println(p.getName() + " loses!");
 				p.takeFromWallet(p.getBet());
 			}

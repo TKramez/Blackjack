@@ -34,9 +34,15 @@ public class Player {
 			this.getHand().printHand();
 
 			if (this.canSplit())
-				System.out.print("What would you like to do (Split, Double, Stay, Hit)?  ");
+				System.out.print("What would you like to do (Split, Stay, Hit)? ");
+			else if (this.canDouble()) {
+				System.out.print("What would you like to do (Double, Stay, Hit)? ");
+			}
+			else if (this.canSplit() && this.canDouble()) {
+				System.out.println("What would you like to do (Double, Split, Stay, Hit)? ");
+			}
 			else
-				System.out.print("What would you like to do (Double, Stay, Hit)?  ");
+				System.out.print("What would you like to do (Stay, Hit)?  ");
 
 			playerAction = Game.scan.next();
 
@@ -50,10 +56,18 @@ public class Player {
 						System.out.println("Sorry, this hand can not be split.");
 				}
 				else if(playerAction.equalsIgnoreCase("double")) {
-					invalidMove = false;
+					if (this.canDouble()) {
+						this.setBet(this.getBet() * 2.0);
+						this.getHand().addCard(deck.getNextCard());
+						System.out.println(this.getName() + " here is your hand: ");
+						this.getHand().printHand();
+						return;
+					}
+					else
+						System.out.println("Sorry, this hand can not be doubled.");
 				}
 				else if(playerAction.equalsIgnoreCase("stay")) {
-					return;
+					bust = true;
 				}
 				else if(playerAction.equalsIgnoreCase("hit")) {
 					Card draw;
@@ -76,6 +90,15 @@ public class Player {
 				return;
 			}
 		}
+	}
+
+	private boolean canDouble() {
+		boolean canDouble = false;
+		
+		if (this.getHand().sizeOfHand() == 2)
+			canDouble = true;
+		
+		return canDouble;
 	}
 
 	public String getName() {
@@ -107,7 +130,7 @@ public class Player {
 		return bet;
 	}
 	
-	public void setBet(int bet) {
+	public void setBet(double bet) {
 		this.bet = bet;
 	}
 
