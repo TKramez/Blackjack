@@ -25,9 +25,6 @@ public class Player {
 				invalidMove;
 		String playerAction;
 
-		Hand hand = new Hand(deck.getNextCard(), deck.getNextCard());
-		this.addHand(hand);
-
 		while (!bust) {
 			invalidMove = true;
 			System.out.println(this.getName() + " here is your hand: ");
@@ -61,12 +58,22 @@ public class Player {
 						this.getHand().addCard(deck.getNextCard());
 						System.out.println(this.getName() + " here is your hand: ");
 						this.getHand().printHand();
-						return;
+						
+						if (this.getHand().getPoints() > 21) {
+							bust = true;
+							System.out.println("BUST!");
+						}
+						else if (this.getHand().getPoints() == 21)
+							System.out.println("21!");
+						
+						invalidMove = false;
+						bust = true;
 					}
 					else
 						System.out.println("Sorry, this hand can not be doubled.");
 				}
 				else if(playerAction.equalsIgnoreCase("stay")) {
+					invalidMove = false;
 					bust = true;
 				}
 				else if(playerAction.equalsIgnoreCase("hit")) {

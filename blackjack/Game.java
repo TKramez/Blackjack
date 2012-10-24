@@ -132,7 +132,7 @@ public class Game {
 				System.out.println(p.getName() + " loses!");
 				p.takeFromWallet(p.getBet());
 			}
-			System.out.println(p.getName() + ", you have $" + p.getWallet() + " left.");
+			System.out.println(p.getName() + ", you have $" + p.getWallet() + ".");
 		}
 	}
 }

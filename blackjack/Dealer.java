@@ -1,21 +1,13 @@
 package blackjack;
 
-/**
- * 
- * @author Jordan Greenfield
- * @date   Oct 19, 2012
- *
- */
 public class Dealer extends Player {
-	
+
 	public Dealer() {
 		super("House");
 	}
-	
+
 	public void playHand(Deck deck) {
 		boolean bust = false;
-		Hand hand = new Hand(deck.getNextCard(), deck.getNextCard());
-		this.addHand(hand);
 
 		while (!bust) {
 			System.out.println(this.getName() + "'s hand:");
@@ -25,9 +17,11 @@ public class Dealer extends Player {
 				if (this.getHand().getPoints() > 21) {
 					System.out.println("HOUSE BUST!");
 					bust = true;
-				} else if (this.getHand().getPoints() >= 17 && !this.getHand().hasAce()) {
+				}
+				else if ((this.getHand().getPoints() >= 17 && !this.getHand().hasAce()) ||
+						(this.getHand().getPoints() > 17 && this.getHand().hasAce()))
 					bust = true;
-				} else {
+				else {
 					Card draw;
 					this.getHand().addCard(draw = deck.getNextCard());
 					System.out.println("The house drew " + draw.toString());
