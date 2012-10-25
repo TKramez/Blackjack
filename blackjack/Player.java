@@ -20,7 +20,7 @@ public class Player {
 		bet = 0.0;
 	}
 	
-	public void playHand(Deck deck) {
+	public void playHand(Deck deck, Hand hand) {
 		boolean bust = false,
 				invalidMove;
 		String playerAction;
@@ -46,7 +46,8 @@ public class Player {
 			while (invalidMove) {			
 				if(playerAction.equalsIgnoreCase("split")) {
 					if (this.canSplit()) {
-						this.addHand(this.getHand().split());
+						this.addHand(this.getHand().split(deck));
+						this.playHand(deck, this.getHand());
 						invalidMove = false;
 					}
 					else
@@ -122,7 +123,7 @@ public class Player {
 	}
 
 	public Hand getHand() {
-		return myHand.get(0);
+		return myHand.get(1);
 	}
 
 	public int getNumberOfHands() {

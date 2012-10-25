@@ -42,10 +42,11 @@ public class Hand {
 		return splittable;
 	}
 
-	public Hand split() {
+	public Hand split(Deck deck) {
 		Hand newHand = new Hand(playerHand.get(1));
 		playerHand.remove(1);
-
+		playerHand.add(Game.getGame().getDeck().getNextCard());
+		newHand.addCard(Game.getGame().getDeck().getNextCard());
 		return newHand;
 	}
 	
