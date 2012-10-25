@@ -123,7 +123,11 @@ public class Player {
 	}
 
 	public Hand getHand() {
-		return myHand.get(1);
+		return myHand.get(0);
+	}
+	
+	public Hand getHand(int handNum) {
+		return myHand.get(handNum);
 	}
 
 	public int getNumberOfHands() {
