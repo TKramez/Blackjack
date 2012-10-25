@@ -13,6 +13,7 @@ package blackjack;
  */
 
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -33,24 +34,29 @@ public class Game {
 	public static void main(String[] args) {
 		Vector<Player> players = makePlayerList();
 		Dealer dealer = new Dealer();
-		
+
 		String temp = "";
 		boolean playAgain = true;
-		
+
 		do {
 			new Game(new Deck(), dealer, players);
-			
+
 			do {
-				System.out.print("Would you like to play again (yes or no)? ");
-				temp = scan.next();
-			
-				if (temp.equalsIgnoreCase("no")) {
+
+				if (players.size() > 0) {
+					System.out.print("Would you like to play again (yes or no)? ");
+					temp = scan.next();
+					if (temp.equalsIgnoreCase("no")) {
+						playAgain = false;
+					}
+				} else {
 					playAgain = false;
 				}
+
 			} while (!temp.equalsIgnoreCase("no") && !temp.equalsIgnoreCase("yes"));
 		} while (playAgain);
 	}
-	
+
 	public Vector<Player> getPlayerList() {
 		return players;
 	}
@@ -65,11 +71,21 @@ public class Game {
 		System.out.print("Welcome to Blackjack 2.0! \nHow many people are playing (1-3)? ");
 
 		do {
-			numPlayers = scan.nextInt();
-			if (numPlayers < MIN_PLAYERS)
+			try {
+				numPlayers = scan.nextInt();
+			} catch(InputMismatchException e) {
+				numPlayers = -1;
+			}
+			
+			scan.nextLine();
+			
+			if (numPlayers < 0) {
+				System.out.println("Invalid input.\nHow many people are playing?");
+			} else if (numPlayers < MIN_PLAYERS)
 				System.out.printf("Sorry, you must have at least %d player.\nHow many people are playing? ", MIN_PLAYERS);
 			else if (numPlayers > MAX_PLAYERS)
 				System.out.printf("Sorry, you cannot have more than %d players.\nHow many people are playing? ", MAX_PLAYERS);
+
 		} while (numPlayers < MIN_PLAYERS || numPlayers > MAX_PLAYERS);
 
 		for (int i = 0; i < numPlayers; i++) {
@@ -81,7 +97,7 @@ public class Game {
 
 		return playerList;
 	}
-	
+
 	public Dealer getDealer() {
 		return dealer;
 	}
@@ -96,9 +112,10 @@ public class Game {
 		deck.shuffleDeck();
 
 		for (Player p : players) {
-			System.out.print(p.getName() + ", how much do you want to bet?   ");
+			System.out.printf("You have $%.2f in your wallet.\n", p.getWallet());
+			System.out.print(p.getName() + ", how much do you want to bet? ");
 			p.setBet(scan.nextInt());
-			
+
 			while (p.getBet() > p.getWallet()) {
 				System.out.print("The amount bet exceeds the amount in the wallet. Please choose a new bet: ");
 				p.setBet(scan.nextInt());
@@ -110,7 +127,7 @@ public class Game {
 		System.out.println(dealer.getName() + "'s card is " + dealer.getHand().getCard(0) + ".");
 		
 		for (Player p : players) {
-			p.playHand(deck);
+			p.playHand(deck, p.getHand());
 		}
 		dealer.playHand(deck);
 
@@ -139,7 +156,7 @@ public class Game {
 				System.out.println(p.getName() + " loses!");
 				p.takeFromWallet(p.getBet());
 			}
-			System.out.println(p.getName() + ", you have $" + p.getWallet() + ".");
+			System.out.printf("%s, you have $%.2f.\n", p.getName(), p.getWallet());
 		}
 	}
 }
