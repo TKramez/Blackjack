@@ -40,13 +40,14 @@ public class Game {
 		do {
 			new Game(new Deck(), dealer, players);
 			
-			System.out.print("Would you like to play again (yes or no)? ");
-			temp = scan.next();
+			do {
+				System.out.print("Would you like to play again (yes or no)? ");
+				temp = scan.next();
 			
-			if (temp.equalsIgnoreCase("no")) {
-				playAgain = false;
-			}
-			
+				if (temp.equalsIgnoreCase("no")) {
+					playAgain = false;
+				}
+			} while (!temp.equalsIgnoreCase("no") && !temp.equalsIgnoreCase("yes"));
 		} while (playAgain);
 	}
 	
