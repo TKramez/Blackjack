@@ -61,6 +61,10 @@ public class Game {
 	public static Game getGame() {
 		return game;
 	}
+	
+	public Deck getDeck() {
+		return this.deck;
+	}
 
 	public Vector<Player> getPlayerList() {
 		return players;
