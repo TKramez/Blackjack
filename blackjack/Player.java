@@ -30,14 +30,12 @@ public class Player {
 			System.out.println(this.getName() + " here is your hand: ");
 			this.getHand().printHand();
 
-			if (this.canSplit())
-				System.out.print("What would you like to do (Split, Stay, Hit)? ");
-			else if (this.canDouble()) {
-				System.out.print("What would you like to do (Double, Stay, Hit)? ");
-			}
-			else if (this.canSplit() && this.canDouble()) {
+			if (this.canSplit() && this.canDouble())
 				System.out.println("What would you like to do (Double, Split, Stay, Hit)? ");
-			}
+			else if (this.canSplit())
+				System.out.print("What would you like to do (Split, Stay, Hit)? ");
+			else if (this.canDouble())
+				System.out.print("What would you like to do (Double, Stay, Hit)? ");
 			else
 				System.out.print("What would you like to do (Stay, Hit)?  ");
 
@@ -47,8 +45,11 @@ public class Player {
 				if(playerAction.equalsIgnoreCase("split")) {
 					if (this.canSplit()) {
 						this.addHand(this.getHand().split(deck));
-						this.playHand(deck, this.getHand());
 						invalidMove = false;
+						
+						for (int i = 1; i < this.getNumberOfHands(); i++) {
+							this.playHand(deck, this.getHand(i));
+						}
 					}
 					else
 						System.out.println("Sorry, this hand can not be split.");
