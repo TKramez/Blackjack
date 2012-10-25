@@ -20,6 +20,7 @@ import java.util.Vector;
 public class Game {
 	public static Scanner scan = new Scanner(System.in);
 	
+	private static Game game;
 	private Deck deck;
 	private Vector<Player> players;
 	private Dealer dealer;
@@ -39,7 +40,7 @@ public class Game {
 		boolean playAgain = true;
 
 		do {
-			new Game(new Deck(), dealer, players);
+			game = new Game(new Deck(), dealer, players);
 
 			do {
 
@@ -55,6 +56,10 @@ public class Game {
 
 			} while (!temp.equalsIgnoreCase("no") && !temp.equalsIgnoreCase("yes"));
 		} while (playAgain);
+	}
+	
+	public static Game getGame() {
+		return game;
 	}
 
 	public Vector<Player> getPlayerList() {
