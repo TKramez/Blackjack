@@ -98,6 +98,11 @@ public class Game {
 		for (Player p : players) {
 			System.out.print(p.getName() + ", how much do you want to bet?   ");
 			p.setBet(scan.nextInt());
+			
+			while (p.getBet() > p.getWallet()) {
+				System.out.print("The amount bet exceeds the amount in the wallet. Please choose a new bet: ");
+				p.setBet(scan.nextInt());
+			}
 		}
 		
 		deck.deal(this);
