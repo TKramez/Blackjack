@@ -43,7 +43,16 @@ public class Game {
 			game = new Game(new Deck(), dealer, players);
 
 			do {
-
+				Vector<Player> tempPlay = new Vector<Player>();
+				
+				for (Player p : players) {
+					if (p.getWallet() > 0) {
+						tempPlay.add(p);
+					}
+				}
+				
+				players = tempPlay;
+				
 				if (players.size() > 0) {
 					System.out.print("Would you like to play again (yes or no)? ");
 					temp = scan.next();
@@ -52,6 +61,7 @@ public class Game {
 					}
 				} else {
 					playAgain = false;
+					System.exit(0);
 				}
 
 			} while (!temp.equalsIgnoreCase("no") && !temp.equalsIgnoreCase("yes"));
@@ -121,8 +131,8 @@ public class Game {
 		deck.shuffleDeck();
 
 		for (Player p : players) {
-			System.out.printf("You have $%.2f in your wallet.\n", p.getWallet());
-			System.out.print(p.getName() + ", how much do you want to bet? ");
+			System.out.printf("%s, you have $%.2f in your wallet.\n", p.getName(), p.getWallet());
+			System.out.print("How much do you want to bet? ");
 			p.setBet(scan.nextInt());
 
 			while (p.getBet() > p.getWallet()) {
@@ -165,7 +175,10 @@ public class Game {
 				System.out.println(p.getName() + " loses!");
 				p.takeFromWallet(p.getBet());
 			}
-			System.out.printf("%s, you have $%.2f.\n", p.getName(), p.getWallet());
+			if (p.getWallet() == 0) {
+				System.out.printf("%s is out of the game!\n", p.getName());
+			} else 
+				System.out.printf("%s, you have $%.2f.\n", p.getName(), p.getWallet());
 		}
 	}
 }
