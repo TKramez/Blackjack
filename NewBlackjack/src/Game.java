@@ -4,6 +4,12 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Vector;
 
+/**
+ * Things to fix:
+ * 	- Typing YeS when it asks to play again doesn't do anything.
+ * 	- Make program close when everyone is removed.
+ *
+ */
 
 public class Game {
 	private static Scanner scan = new Scanner(System.in);
