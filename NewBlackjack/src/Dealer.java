@@ -20,9 +20,11 @@ public class Dealer extends Player {
 					System.out.println("HOUSE BUST!");
 					bust = true;
 				}
-				else if ((this.getHand().getPoints() >= 17 && !this.getHand().hasAce()) ||
-						(this.getHand().getPoints() > 17 && this.getHand().hasAce()))
+				else if (((this.getHand().getPoints() >= 17) && !this.getHand().hasAce()) ||
+						((this.getHand().getPoints() > 17) && this.getHand().hasAce()))
 					bust = true;
+				else if ((this.getHand().getRawPoints() > this.getHand().getPoints()) && (this.getHand().getPoints() >= 17))
+						bust = true;
 				else {
 					Card draw;
 					this.getHand().addCard(draw = deck.getNextCard());

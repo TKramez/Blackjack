@@ -76,6 +76,16 @@ public class Hand {
 		return points;		
 	}
 	
+	public int getRawPoints() {
+		int points = 0;
+		
+		for (Card c : myCards) {
+			points += c.getFaceValue();
+		}
+		
+		return points;
+	}
+	
 	public void printHand() {
 		for (Card c : myCards) {
 			System.out.println(c.toString());
