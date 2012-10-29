@@ -6,8 +6,7 @@ import java.util.Vector;
 
 /**
  * Things to fix:
- * 	- Typing YeS when it asks to play again doesn't do anything.
- * 	- Make program close when everyone is removed.
+ * 	
  *
  */
 
@@ -177,7 +176,7 @@ public class Game {
 					temp = "-1";
 					System.out.print("Invalid input. Would you like to play again (yes or no)? ");
 				}
-			} while (!temp.equals("yes") && !temp.equals("no"));
+			} while (!temp.equalsIgnoreCase("yes") && !temp.equalsIgnoreCase("no"));
 		}
 		
 		playerList = tempList;
