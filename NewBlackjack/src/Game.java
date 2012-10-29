@@ -117,7 +117,7 @@ public class Game {
 		System.out.printf("%s has %d points.\n", dealer.getName(), dealer.getHand().getPoints());
 		
 		for (Player p : playerList) {
-			for (int i = 0; i < p.getNumberOfHands(); i++) {
+			for (int i = p.getNumberOfHands() - 1; i >= 0; i--) {
 				System.out.printf("%s has %d points for hand%d.\n", p.getName(), p.getHand(i).getPoints(), i + 1);
 				if (p.getHand(i).getPoints() > 21) {
 					System.out.printf("%s loses hand%d! \n", p.getName(), i + 1);
@@ -204,7 +204,7 @@ public class Game {
 				return;
 			}
 			else if (player.canSplit(hand) && player.canDouble(hand))
-				System.out.println("What would you like to do (Double, Split, Stay, Hit)? ");
+				System.out.print("What would you like to do (Double, Split, Stay, Hit)? ");
 			else if (player.canSplit(hand))
 				System.out.print("What would you like to do (Split, Stay, Hit)? ");
 			else if (player.canDouble(hand))
@@ -257,6 +257,7 @@ public class Game {
 				System.out.println("BUST!");
 			}
 			else if (hand.getPoints() == 21) {
+				hand.printHand();
 				System.out.println("21!");
 				return;
 			}
