@@ -17,7 +17,7 @@ public class Game {
 	private static Dealer dealer = new Dealer();
 	
 	public static void main(String[] args) {
-		System.out.println("Welcome to Blackjack by TJBK.");
+		System.out.println("Welcome to Blackjack by Team Dragon.");
 		
 		makePlayerList();
 		
