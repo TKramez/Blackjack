@@ -1,106 +1,56 @@
 package blackjack;
 
-/*
- * stuff we need to add
- * 
- * -splitting hand works, but we need to make it so the game
- * 	actually runs through the players' multiple hands.
- * -input error checking
- * -make it so when player wallet = 0, game is over.
- * -make it so a player cannot bet more than they have. Also,
- *  check to see if they have enough money to double, split,
- *  or both.
- */
-
-
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Vector;
 
+/**
+ * Things to fix:
+ * 	
+ *
+ */
+
 public class Game {
-	public static Scanner scan = new Scanner(System.in);
+	private static Scanner scan = new Scanner(System.in);
+	private static Vector<Player> playerList = new Vector<Player>();
+	private static Deck deck = new Deck();
+	private static Dealer dealer = new Dealer();
 	
-	private static Game game;
-	private Deck deck;
-	private Vector<Player> players;
-	private Dealer dealer;
-	
-	public Game(Deck deck, Dealer dealer, Vector<Player> players) {
-		this.deck = deck;
-		this.players = players;
-		this.dealer = dealer;
-		play();
-	}
-
 	public static void main(String[] args) {
-		Vector<Player> players = makePlayerList();
-		Dealer dealer = new Dealer();
-
-		String temp = "";
-		boolean playAgain = true;
-
+		System.out.println("Welcome to Blackjack by Team Dragon.");
+		
+		makePlayerList();
+		
 		do {
-			game = new Game(new Deck(), dealer, players);
-
-			do {
-				Vector<Player> tempPlay = new Vector<Player>();
-				
-				for (Player p : players) {
-					if (p.getWallet() > 0) {
-						tempPlay.add(p);
-					}
-				}
-				
-				players = tempPlay;
-				
-				if (players.size() > 0) {
-					System.out.print("Would you like to play again (yes or no)? ");
-					temp = scan.next();
-					if (temp.equalsIgnoreCase("no")) {
-						playAgain = false;
-					}
-				} else {
-					playAgain = false;
-					System.exit(0);
-				}
-
-			} while (!temp.equalsIgnoreCase("no") && !temp.equalsIgnoreCase("yes"));
-		} while (playAgain);
+			preGameSetup();
+			playGame();
+			determineWinners();
+			removeBrokePlayers();
+		} while (playAgain());
+		
+		System.out.println("There are no more players in the game. \nThe Game will now exit, thanks for playing!");
 	}
 	
-	public static Game getGame() {
-		return game;
-	}
-	
-	public Deck getDeck() {
-		return this.deck;
-	}
-
-	public Vector<Player> getPlayerList() {
-		return players;
-	}
-
-	public static Vector<Player> makePlayerList() {
+	public static void makePlayerList() {
 		final int MAX_PLAYERS = 3, MIN_PLAYERS = 1;
-		Vector<Player> playerList = new Vector<Player>();
 		int numPlayers;
 		String playerName;
 
-
-		System.out.print("Welcome to Blackjack 2.0! \nHow many people are playing (1-3)? ");
+		System.out.print("How many people are playing (1-3)? ");
 
 		do {
 			try {
 				numPlayers = scan.nextInt();
-			} catch(InputMismatchException e) {
+			}
+			catch(InputMismatchException e) {
 				numPlayers = -1;
 			}
 			
 			scan.nextLine();
 			
-			if (numPlayers < 0) {
-				System.out.println("Invalid input.\nHow many people are playing?");
-			} else if (numPlayers < MIN_PLAYERS)
+			if (numPlayers < 0)
+				System.out.print("Invalid input.\nHow many people are playing? ");
+			else if (numPlayers < MIN_PLAYERS)
 				System.out.printf("Sorry, you must have at least %d player.\nHow many people are playing? ", MIN_PLAYERS);
 			else if (numPlayers > MAX_PLAYERS)
 				System.out.printf("Sorry, you cannot have more than %d players.\nHow many people are playing? ", MAX_PLAYERS);
@@ -113,72 +63,216 @@ public class Game {
 
 			playerList.add(new Player(playerName));
 		}
-
-		return playerList;
 	}
-
-	public Dealer getDealer() {
-		return dealer;
-	}
-
-	private void play() {
-		for (Player p : players) {
-			p.removeHand();
+	
+	public static void preGameSetup() {
+		for (Player p : playerList) {
+			p.removeAllHands();
 		}
-
-		dealer.removeHand();
-
+		
+		dealer.removeAllHands();
+		
 		deck.shuffleDeck();
+	}
 
-		for (Player p : players) {
+	public static void playGame() {
+		for (Player p : playerList) {
+			int bet;
 			System.out.printf("%s, you have $%.2f in your wallet.\n", p.getName(), p.getWallet());
 			System.out.print("How much do you want to bet? ");
-			p.setBet(scan.nextInt());
-
-			while (p.getBet() > p.getWallet()) {
-				System.out.print("The amount bet exceeds the amount in the wallet. Please choose a new bet: ");
-				p.setBet(scan.nextInt());
-			}
-		}
-		
-		deck.deal(this);
-		
-		System.out.println(dealer.getName() + "'s card is " + dealer.getHand().getCard(0) + ".");
-		
-		for (Player p : players) {
-			p.playHand(deck, p.getHand());
-		}
-		dealer.playHand(deck);
-
-		for (Player p : players) {
-			if (p.getHand().getPoints() > 21) {
-				System.out.println(p.getName() + " loses!");
-				p.takeFromWallet(p.getBet());
-			}
-			else if (dealer.getHand().getPoints() > 21) {
-				System.out.println(p.getName() + " wins!");
-				p.addToWallet(p.getBet());
-			} 
-			else if (p.getHand().getPoints() > dealer.getHand().getPoints()) {
-				System.out.println(p.getName() + " wins!");
-				if (p.getHand().getPoints() == 21 && p.getHand().sizeOfHand() == 2)
-				{
-					p.addToWallet(p.getBet() * 1.5);
+			
+			do {
+				try {
+					bet = scan.nextInt();
 				}
+				catch(InputMismatchException e) {
+					bet = -1;
+				}
+				
+				scan.nextLine();
+				
+				if (bet < 0)
+					System.out.print("Invalid input. Please choose a new bet: ");
+				else if (bet < 1)
+					System.out.print("Sorry, the minimum bet is $1.00. Please choose a new bet: ");
+				else if (bet > p.getWallet())
+					System.out.print("The amount bet exceeds the amount in the wallet. Please choose a new bet: ");
 				else
-					p.addToWallet(p.getBet());
-			} 
-			else if (p.getHand().getPoints() == dealer.getHand().getPoints()) {
-				System.out.println(p.getName() + " pushes.");
-			} 
-			else {
-				System.out.println(p.getName() + " loses!");
-				p.takeFromWallet(p.getBet());
-			}
-			if (p.getWallet() == 0) {
-				System.out.printf("%s is out of the game!\n", p.getName());
-			} else 
-				System.out.printf("%s, you have $%.2f.\n", p.getName(), p.getWallet());
+					p.setBet(bet);
+				
+			} while (bet < 1 || bet > p.getWallet());
 		}
+		
+		dealer.deal(playerList, deck, dealer);
+		
+		for (Player p : playerList) {
+			System.out.printf("%s's card is %s.\n", dealer.getName(), dealer.getHand().getCard(0));
+			playHand(p, p.getHand());
+		}
+		
+		dealer.playHand(deck);
+	}
+	
+	public static void determineWinners() {
+		System.out.printf("%s has %d points.\n", dealer.getName(), dealer.getHand().getPoints());
+		
+		for (Player p : playerList) {
+			for (int i = p.getNumberOfHands() - 1; i >= 0; i--) {
+				System.out.printf("%s has %d points for hand%d.\n", p.getName(), p.getHand(i).getPoints(), i + 1);
+				if (p.getHand(i).getPoints() > 21) {
+					System.out.printf("%s loses hand%d! \n", p.getName(), i + 1);
+					p.takeFromWallet(p.getBet());
+				}
+				else if (dealer.getHand().getPoints() > 21) {
+					System.out.printf("%s wins hand%d! \n", p.getName(), i + 1);
+					p.addToWallet(p.getBet());
+				} 
+				else if (p.getHand(i).getPoints() > dealer.getHand().getPoints()) {
+					System.out.printf("%s wins hand%d! \n", p.getName(), i + 1);
+					if (p.getHand(i).getPoints() == 21 && p.getHand(i).sizeOfHand() == 2)
+					{
+						p.addToWallet(p.getBet() * 1.5);
+					}
+					else
+						p.addToWallet(p.getBet());
+				} 
+				else if (p.getHand(i).getPoints() == dealer.getHand().getPoints()) {
+					System.out.printf("%s pushes hand%d! \n", p.getName(), i + 1);
+				} 
+				else {
+					System.out.printf("%s loses hand%d! \n", p.getName(), i + 1);
+					p.takeFromWallet(p.getBet());
+				}
+			}
+		}
+	}
+	
+	public static void removeBrokePlayers() {
+		for (int i = playerList.size() - 1; i >= 0; i--) {
+			if (playerList.get(i).getWallet() == 0) {
+				System.out.println(playerList.get(i).getName() + " is broke and kicked out of the game!");
+				playerList.remove(playerList.indexOf(playerList.get(i)));
+			}
+		}
+	}
+	
+	public static boolean playAgain() {
+		Vector<Player> tempList = new Vector<Player>();
+		boolean playAgain;
+		String temp = "";
+		
+		for (Player p : playerList) {
+			System.out.printf("%s, you have $%.2f.\n", p.getName(), p.getWallet());
+			System.out.print("Would you like to play again (yes or no)? ");
+				
+			do {
+				temp = scan.next();
+				
+				if (temp.equalsIgnoreCase("yes"))
+					tempList.add(p);
+				else if (temp.equalsIgnoreCase("no"))
+					System.out.println(p.getName() + " was removed from the game.");
+				else {
+					temp = "-1";
+					System.out.print("Invalid input. Would you like to play again (yes or no)? ");
+				}
+			} while (!temp.equalsIgnoreCase("yes") && !temp.equalsIgnoreCase("no"));
+		}
+		
+		playerList = tempList;
+			
+		if (playerList.isEmpty())
+			playAgain = false;
+		else
+			playAgain = true;
+		
+		return playAgain;
+	}
+
+	public static void playHand(Player player, Hand hand) {
+		boolean bust = false,
+				invalidMove;
+		String playerAction;
+
+		while (!bust) {
+			invalidMove = true;
+			System.out.println(player.getName() + " here is your hand: ");
+			hand.printHand();
+
+			if (hand.getPoints() == 21) {
+				System.out.println("Natural 21!");
+				return;
+			}
+			else if (player.canSplit(hand) && player.canDouble(hand))
+				System.out.print("What would you like to do (Double, Split, Stay, Hit)? ");
+			else if (player.canSplit(hand))
+				System.out.print("What would you like to do (Split, Stay, Hit)? ");
+			else if (player.canDouble(hand))
+				System.out.print("What would you like to do (Double, Stay, Hit)? ");
+			else
+				System.out.print("What would you like to do (Stay, Hit)?  ");
+
+			playerAction = scan.next();
+
+			while (invalidMove) {			
+				if(playerAction.equalsIgnoreCase("split")) {
+					if (player.canSplit(hand)) {
+						hand = splitHand(player, hand);
+						invalidMove = false;
+					}
+					else
+						System.out.println("Sorry, this hand can not be split.");
+				}
+				else if(playerAction.equalsIgnoreCase("double")) {
+					if (player.canDouble(hand)) {
+						player.setBet(player.getBet() * 2.0);
+						hand.addCard(deck.getNextCard());
+						System.out.println(player.getName() + " here is your hand: ");
+						hand.printHand();
+						
+						invalidMove = false;
+						bust = true;
+					}
+					else
+						System.out.println("Sorry, this hand can not be doubled.");
+				}
+				else if(playerAction.equalsIgnoreCase("stay")) {
+					invalidMove = false;
+					bust = true;
+				}
+				else if(playerAction.equalsIgnoreCase("hit")) {
+					Card draw;
+					hand.addCard(draw = deck.getNextCard());
+					System.out.println("You drew " + draw.toString());
+					invalidMove = false;
+				}
+				else {
+					System.out.print("Invalid choice, choose again:  ");
+					playerAction = Game.scan.next();
+				}
+			}
+			
+			if (hand.getPoints() > 21) {
+				bust = true;
+				System.out.println("BUST!");
+			}
+			else if (hand.getPoints() == 21) {
+				hand.printHand();
+				System.out.println("21!");
+				return;
+			}
+		}
+	}
+	
+	public static Hand splitHand(Player player, Hand oldHand) {
+		Hand newHand = new Hand (oldHand.getCard(1), deck.getNextCard());
+		player.addHand(newHand);
+		
+		oldHand.removeCard(1);
+		oldHand.addCard(deck.getNextCard());
+		
+		playHand(player, newHand);
+		
+		return oldHand;
 	}
 }

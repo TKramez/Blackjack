@@ -1,17 +1,16 @@
 package blackjack;
 
-import java.util.Vector;
 import java.util.Random;
+import java.util.Vector;
 
 
 public class Deck {
-	private Vector<Card> playingDeck;
-
+	private Vector<Card> playingDeck = new Vector<Card>();
+	
 	public Deck() {
-		playingDeck = new Vector<Card>();
 		shuffleDeck();
 	}
-
+	
 	public void shuffleDeck() {
 		playingDeck.clear();
 
@@ -49,31 +48,14 @@ public class Deck {
 			}
 		}
 	}
-
+	
 	public Card getNextCard() {
 		Random rand = new Random();
 		int randomCard = rand.nextInt(playingDeck.size());
-
+		
 		Card nextCard = playingDeck.get(randomCard);
 		playingDeck.remove(randomCard);
-
+		
 		return nextCard;
-	}
-
-	public void deal(Game game) {
-		Hand hand;
-		for (Player p : game.getPlayerList()) {
-			hand = new Hand(getNextCard());
-			p.addHand(hand);
-		}	
-		
-		hand = new Hand(getNextCard());
-		game.getDealer().addHand(hand);
-		
-		for (Player p : game.getPlayerList()) {
-			p.getHand().addCard(getNextCard());
-		}
-		
-		game.getDealer().getHand().addCard(getNextCard());
 	}
 }

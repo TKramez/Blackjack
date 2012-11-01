@@ -2,76 +2,93 @@ package blackjack;
 
 import java.util.Vector;
 
+
 public class Hand {
-	private Vector<Card> playerHand;
-
+	private Vector<Card> myCards = new Vector<Card>();
+	
 	public Hand() {
-		playerHand = new Vector<Card>();
-	}
 
+	}
+	
 	public Hand(Card one) {
-		playerHand = new Vector<Card>();
-		playerHand.add(one);
+		myCards.add(one);
 	}
-
+	
 	public Hand(Card one, Card two) {
-		playerHand = new Vector<Card>();
-		playerHand.add(one);
-		playerHand.add(two);
-	}
-
-	public int getPoints() {
-		int points = 0;
-
-		for (int i = 0; i < playerHand.size(); i++) {
-			points += playerHand.get(i).getFaceValue();
-		}
-		
-		if (points > 21 && this.hasAce())
-			points -= 10;
-
-		return points;
-	}
-
-	public boolean isSplittable() {
-		boolean splittable;
-		if (playerHand.size() == 2 && (playerHand.get(0).getFaceValue() == playerHand.get(1).getFaceValue()))
-			splittable = true;
-		else
-			splittable = false;
-		return splittable;
-	}
-
-	public Hand split(Deck deck) {
-		Hand newHand = new Hand(playerHand.get(1));
-		playerHand.remove(1);
-		playerHand.add(Game.getGame().getDeck().getNextCard());
-		newHand.addCard(Game.getGame().getDeck().getNextCard());
-		return newHand;
-	}
-	
-	public boolean hasAce() {
-		for (Card h : playerHand) {
-			if (h.getNumber().equalsIgnoreCase("ace"))
-				return true;
-		}
-		return false;
-	}
-
-	public void addCard(Card a) {
-		playerHand.add(a);
-	}
-
-	public void printHand() {
-		for (int i = 0; i < playerHand.size(); i++)
-			System.out.println(playerHand.get(i).toString());
-	}
-	
-	public Card getCard(int num) {
-		return playerHand.get(num);
+		myCards.add(one);
+		myCards.add(two);
 	}
 	
 	public int sizeOfHand() {
-		return playerHand.size();
+		return myCards.size();
+	}
+	
+	public void addCard(Card a) {
+		myCards.add(a);
+	}
+	
+	public Card getCard(int num) {
+		return myCards.get(num);
+	}
+	
+	public void removeCard(int num) {
+		myCards.remove(num);
+	}
+	
+	public boolean hasAce() {
+		boolean ace = false;
+		
+		for (Card c : myCards) {
+			if (c.getNumber().equalsIgnoreCase("ace"))
+				ace = true;
+		}
+		
+		return ace;
+	}
+	
+	public int numberOfAces() {
+		int counter = 0;
+		
+		for (Card c : myCards) {
+			if (c.getNumber().equalsIgnoreCase("ace"))
+				counter++;
+		}
+		
+		return counter;
+	}
+	
+	public int getPoints() {
+		int points = 0;
+		
+		for (Card c : myCards) {
+			points += c.getFaceValue();
+		}
+		
+		if (points > 21 && (this.numberOfAces() >= 1))
+			points -= 10;
+		if (points > 21 && (this.numberOfAces() >= 2))
+			points -= 10;
+		if (points > 21 && (this.numberOfAces() >= 3))
+			points -= 10;
+		if (points > 21 && (this.numberOfAces() == 4))
+			points -= 10;
+		
+		return points;		
+	}
+	
+	public int getRawPoints() {
+		int points = 0;
+		
+		for (Card c : myCards) {
+			points += c.getFaceValue();
+		}
+		
+		return points;
+	}
+	
+	public void printHand() {
+		for (Card c : myCards) {
+			System.out.println(c.toString());
+		}
 	}
 }
