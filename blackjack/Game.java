@@ -4,12 +4,6 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Vector;
 
-/**
- * Things to fix:
- * 	
- *
- */
-
 public class Game {
 	private static Scanner scan = new Scanner(System.in);
 	private static Vector<Player> playerList = new Vector<Player>();
