@@ -69,7 +69,7 @@ public class Player {
 	}
 	
 	public boolean canSplit(Hand hand) {
-		boolean cardOneEqualCardTwo = (hand.getCard(0).getFaceValue() == hand.getCard(1).getFaceValue());
+		boolean cardOneEqualCardTwo = (hand.getCard(0).getNumber().equals(hand.getCard(1).getNumber()));
 		
 		return ((hand.sizeOfHand() == 2) && cardOneEqualCardTwo && (wallet >= (bet * 2)));
 	}
