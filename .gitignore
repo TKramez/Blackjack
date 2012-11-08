@@ -3,6 +3,7 @@
 *.jar
 
 # Eclipse Stuff
+/.classpath
 /.project
 /.settings
 /bin
