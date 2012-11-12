@@ -20,8 +20,7 @@ public class Card {
 
 		if (number.equals("Ace"))
 			faceValue = 11;
-		else if (number.equals("Jack") || number.equals("Queen")
-				|| number.equals("King"))
+		else if (number.equals("Jack") || number.equals("Queen") || number.equals("King"))
 			faceValue = 10;
 		else
 			faceValue = Integer.parseInt(number);

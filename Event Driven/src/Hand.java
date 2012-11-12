@@ -82,10 +82,4 @@ public class Hand {
 
 		return points;
 	}
-
-	public void printHand() {
-		for (Card c : myCards) {
-			System.out.println(c.toString());
-		}
-	}
 }
