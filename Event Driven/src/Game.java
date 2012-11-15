@@ -16,6 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -150,43 +151,48 @@ public class Game extends JFrame implements ActionListener{
 	}
 	
 	public static void main(String[] args) throws InterruptedException {
-		playerList = new Vector<Player>();
-		
-		GreetAndMakePlayerList greeter = new GreetAndMakePlayerList();
-		greeter.setSize(306, 268);
-		greeter.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		greeter.setLocationRelativeTo(null);
-		greeter.setTitle("Blackjack by Team Dragon");
-		greeter.setResizable(false);
-		greeter.setVisible(true);
-		
-		while (playerList.isEmpty()) {
-			playerList = greeter.getPlayerList();
-		}
-		
-		playerList = greeter.getPlayerList();
-		greeter.dispose();
-		
-		Game table = new Game();
-		table.setSize(906, 628);
-		table.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		table.setLocationRelativeTo(null);
-		table.setTitle("Blackjack by Team Dragon");
-		table.setResizable(false);
-		table.setVisible(true);
-		table.setBackground(new Color(12, 24, 2));	
-		
-		dialogue.append("Welcome to Blackjack by Team Dragon!");
-		
+		int again;
 		do {
-			preGameSetup();
-			playGame(table);
-			determineWinners();
-			removeBrokePlayers();
-		} while (playAgain());
+			playerList = new Vector<Player>();
 
-		dialogue.append("\nThere are no more players in the game. \nThanks for playing!");
-		
+			GreetAndMakePlayerList greeter = new GreetAndMakePlayerList();
+			greeter.setSize(306, 268);
+			greeter.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+			greeter.setLocationRelativeTo(null);
+			greeter.setTitle("Blackjack by Team Dragon");
+			greeter.setResizable(false);
+			greeter.setVisible(true);
+
+			while (playerList.isEmpty()) {
+				playerList = greeter.getPlayerList();
+			}
+
+			playerList = greeter.getPlayerList();
+			greeter.dispose();
+
+			Game table = new Game();
+			table.setSize(906, 628);
+			table.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			table.setLocationRelativeTo(null);
+			table.setTitle("Blackjack by Team Dragon");
+			table.setResizable(false);
+			table.setVisible(true);
+			table.setBackground(new Color(12, 24, 2));	
+
+			dialogue.append("Welcome to Blackjack by Team Dragon!");
+
+			do {
+				preGameSetup();
+				playGame(table);
+				determineWinners();
+				removeBrokePlayers();
+			} while (playAgain());
+
+			dialogue.append("\nThere are no more players in the game. \nThanks for playing!");
+			
+			again = JOptionPane.showOptionDialog(table, "Do you want to play again?", "Reset", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+			table.dispose();
+		} while (again == 0);
 	}
 	
 	public static void preGameSetup() {
