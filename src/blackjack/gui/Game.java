@@ -251,7 +251,7 @@ public class Game extends JFrame implements ActionListener{
 		//This window cannot be closed or resized and opens in the center of the screen.
 		GreetAndMakePlayerList greeter = new GreetAndMakePlayerList();
 		greeter.setSize(306, 268);
-		greeter.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		greeter.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		greeter.setLocationRelativeTo(null);
 		greeter.setTitle("Blackjack by Team Dragon");
 		greeter.setResizable(false);
