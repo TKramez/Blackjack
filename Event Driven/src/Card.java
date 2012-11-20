@@ -1,3 +1,12 @@
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
+
+/*
+ * @Author Jordan Greenfield, Tyler Kramer,
+ * 		   Brandon Turner, Kyle Nyland 
+ */
+
 public class Card {
 	private String number;
 	private String suit;
@@ -26,6 +35,13 @@ public class Card {
 			faceValue = Integer.parseInt(number);
 
 		return faceValue;
+	}
+	
+	public Image getCardImage() {
+		ImageIcon icon = new ImageIcon(Card.class.getResource(this.toString() + ".png"));
+		Image img = icon.getImage();
+		
+		return img;
 	}
 
 	public String toString() {

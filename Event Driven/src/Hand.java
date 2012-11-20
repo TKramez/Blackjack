@@ -1,3 +1,8 @@
+/*
+ * @Author Jordan Greenfield, Tyler Kramer,
+ * 		   Brandon Turner, Kyle Nyland 
+ */
+
 import java.util.Vector;
 
 public class Hand {
