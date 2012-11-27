@@ -447,7 +447,7 @@ public class Game extends JFrame implements ActionListener{
 			//Splits, doubles, stays, or hits - depending on what button the player hit
 			if (playerMove.equals("split")) {
 				hand = splitHand(player, hand, table);
-				dialogue.append("\nWhat's you're move for the next hand (above)?");
+				dialogue.append("\nWhat's your move for the next hand (above)?");
 			}
 			else if (playerMove.equals("double")) {
 				player.setBet(player.getBet() * 2);
@@ -455,6 +455,7 @@ public class Game extends JFrame implements ActionListener{
 				dialogue.append(String.format("\n%s drew %s.", player.getName(), draw.toString()));
 				hand.addCard(draw);
 				stillPlayingHand = false;
+				currentBets[playerList.indexOf(player)].setText(String.format("Current bet: $%.2f", player.getBet()));
 			}
 			else if (playerMove.equals("stay"))
 				stillPlayingHand = false;
@@ -494,14 +495,14 @@ public class Game extends JFrame implements ActionListener{
 		//Then draws another card from the deck and puts it in the old hand.
 		oldHand.removeCard(1);
 		oldHand.addCard(oldHandCard);
-
-		//Plays through the player's new hand
-		dialogue.append(String.format("What's your move for hand %d", player.getNumberOfHands()));
-		playHand(player, newHand, table);
 		
 		//Update card drawings.
 		redrawPlayerCards(table);
-		
+
+		//Plays through the player's new hand
+		dialogue.append(String.format("\nWhat's your move for hand %d", player.getNumberOfHands()));
+		playHand(player, newHand, table);
+				
 		//Plays through the player's old hand
 		return oldHand;
 	}
