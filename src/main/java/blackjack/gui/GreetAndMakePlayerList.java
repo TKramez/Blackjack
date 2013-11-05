@@ -13,6 +13,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import blackjack.core.Player;
+
 
 public class GreetAndMakePlayerList extends JFrame implements ActionListener{
 	/**

@@ -4,11 +4,28 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Vector;
 
+import blackjack.core.Card;
+import blackjack.core.Dealer;
+import blackjack.core.Deck;
+import blackjack.core.Hand;
+import blackjack.core.Player;
+import blackjack.core.Utils;
+
 public class Game {
 	private static Scanner scan = new Scanner(System.in);
 	private static Vector<Player> playerList = new Vector<Player>();
 	private static Deck deck = new Deck();
-	private static Dealer dealer = new Dealer();
+	private static Dealer dealer = new Dealer(new Utils() {
+
+		@Override
+		public void print(String msg) {
+			System.out.println(msg);
+		}
+
+		@Override
+		public void redraw() {}
+		
+	});
 	
 	public static void main(String[] args) {
 		System.out.println("Welcome to Blackjack by Team Dragon.");

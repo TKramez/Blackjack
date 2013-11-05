@@ -1,30 +1,37 @@
-package blackjack.text;
+package blackjack.core;
+/*
+ * @Author Jordan Greenfield, Tyler Kramer,
+ * 		   Brandon Turner, Kyle Nyland 
+ */
 
 import java.util.Random;
 import java.util.Vector;
 
-
 public class Deck {
 	private Vector<Card> playingDeck = new Vector<Card>();
-	
+
 	public Deck() {
 		shuffleDeck();
 	}
-	
+
 	public void shuffleDeck() {
 		playingDeck.clear();
 
 		for (int i = 0; i < 4; i++) {
 			String suit = "";
 			switch (i) {
-			case 0: suit = "Diamond";
-			break;
-			case 1: suit = "Heart";
-			break;
-			case 2: suit = "Spade";
-			break;
-			case 3: suit = "Club";
-			break;
+			case 0:
+				suit = "Diamond";
+				break;
+			case 1:
+				suit = "Heart";
+				break;
+			case 2:
+				suit = "Spade";
+				break;
+			case 3:
+				suit = "Club";
+				break;
 			default:
 				break;
 			}
@@ -48,14 +55,14 @@ public class Deck {
 			}
 		}
 	}
-	
+
 	public Card getNextCard() {
 		Random rand = new Random();
 		int randomCard = rand.nextInt(playingDeck.size());
-		
+
 		Card nextCard = playingDeck.get(randomCard);
 		playingDeck.remove(randomCard);
-		
+
 		return nextCard;
 	}
 }

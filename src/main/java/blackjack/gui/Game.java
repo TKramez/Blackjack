@@ -24,6 +24,13 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
+import blackjack.core.Card;
+import blackjack.core.Dealer;
+import blackjack.core.Deck;
+import blackjack.core.Hand;
+import blackjack.core.Player;
+import blackjack.core.Utils;
+
 public class Game extends JFrame implements ActionListener{
 	/**
 	 * 
@@ -34,7 +41,20 @@ public class Game extends JFrame implements ActionListener{
 	private static final int MAX_CARDS_PER_HAND = 10;
 	
 	private static Vector<Player> playerList = new Vector<Player>();
-	private static Dealer dealer = new Dealer();
+	private static Dealer dealer = new Dealer(new Utils() {
+
+		@Override
+		public void print(String msg) {
+			if (!msg.endsWith("hand."))
+				dialogue.append("\n" + msg);
+		}
+
+		@Override
+		public void redraw() {
+			table.redrawDealerCards(table);
+		}
+		
+	});
 	private static Deck deck = new Deck();
 	private static String playerMove = "";
 	private static boolean dealerInitialized;
@@ -54,6 +74,8 @@ public class Game extends JFrame implements ActionListener{
 	
 	private static Image playerCards[][][] = new Image[MAX_PLAYERS][MAX_HANDS_PER_PLAYER][MAX_CARDS_PER_HAND];
 	private static Image dealerCards[] = new Image[10];
+	
+	private static Game table;
 	
 	public Game() {
 		//Draws the background of the window and makes it possible to draw
@@ -154,10 +176,11 @@ public class Game extends JFrame implements ActionListener{
 	}
 	
 	public Game(Game table) throws InterruptedException {
+		Game.table = table;
 		do {
-			clearAllCards(table);
+			clearAllCards();
 			preGameSetup();				//Prepares for the game to be played
-			playGame(table);			//Plays through each player's hand in the game
+			playGame();			//Plays through each player's hand in the game
 			determineWinners();			//After everyone has played their hands, the game calculates the dinners!
 			removeBrokePlayers();		//If a player has run out of money, they are kicked out of the game.
 			dealerInitialized = false;	//Remove initialization trigger for dealer (in preparation for reset)
@@ -211,10 +234,10 @@ public class Game extends JFrame implements ActionListener{
 			super.paintComponent(g);
 
 			//Paints the updated image(s) inside of the window
-			ImageIcon icon1 = new ImageIcon(GetBlackjackTable.class.getResource("resources/DragonBoard.jpg"));
+			ImageIcon icon1 = new ImageIcon(GetBlackjackTable.class.getResource("/DragonBoard.jpg"));
 			Image background = icon1.getImage();
 			
-			ImageIcon icon2 = new ImageIcon(GetBlackjackTable.class.getResource("resources/Face Down.png"));
+			ImageIcon icon2 = new ImageIcon(GetBlackjackTable.class.getResource("/Face Down.png"));
 			Image facedown = icon2.getImage();
 			
 			g.drawImage(background, 0, 0, 900, 600, this);
@@ -347,7 +370,7 @@ public class Game extends JFrame implements ActionListener{
 		}
 	}
 	
-	public void playGame(Game table) throws InterruptedException {
+	public void playGame() throws InterruptedException {
 		dialogue.append("\nPlease place your bets!");
 
 		//If there is only one player in the game...waits for that player to bet
@@ -402,7 +425,7 @@ public class Game extends JFrame implements ActionListener{
 		
 		//After all of the players have finished their turns, the dealer
 		//is told to play through his/her hand according to a certain logic
-		dealer.playHand(deck, dialogue, table);
+		dealer.playHand(deck);
 	}
 
 	public void playHand(Player player, Hand hand, Game table) {
@@ -599,7 +622,7 @@ public class Game extends JFrame implements ActionListener{
 		table.repaint();
 	}
 
-	public void clearAllCards(Game table) {
+	public void clearAllCards() {
 		//Removes player card images
 		for (int i = 0; i < playerCards.length; i++) {
 			for (int j = 0; j < playerCards[0].length; j++) {

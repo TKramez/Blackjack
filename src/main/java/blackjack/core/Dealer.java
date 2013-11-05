@@ -1,4 +1,5 @@
-package blackjack.gui;
+package blackjack.core;
+
 /*
  * @Author Jordan Greenfield, Tyler Kramer,
  * 		   Brandon Turner, Kyle Nyland 
@@ -6,35 +7,43 @@ package blackjack.gui;
 
 import java.util.Vector;
 
-import javax.swing.JTextArea;
-
 public class Dealer extends Player {
 
-	public Dealer() {
+	private Utils print;
+	
+	public Dealer(Utils utils) {
 		super("House");
+		this.print = utils;
 	}
 
-	public void playHand(Deck deck, JTextArea dialogue, Game table) throws InterruptedException {
+	public void playHand(Deck deck) {
 		boolean bust = false;
 
 		while (!bust) {
+			print.print(this.getName() + "'s hand.");
+			
 			if (this.getHand().getPoints() > 21) {
-				dialogue.append("\nHOUSE BUST!");
+				print.print("HOUSE BUST!");
+				//dialogue.append("\nHOUSE BUST!");
 				bust = true;
 			} 
 			else if (((this.getHand().getPoints() >= 17) && !this.getHand().hasAce()) || ((this.getHand().getPoints() > 17) && this.getHand().hasAce())) {
-				dialogue.append("\nThe house stays.");
+				print.print("The house stays.");
+				//dialogue.append("\nThe house stays.");
 				bust = true;
 			}
 			else if ((this.getHand().getRawPoints() > this.getHand().getPoints()) && (this.getHand().getPoints() >= 17)) {
-				dialogue.append("\nThe house stays.");
+				print.print("The house stays.");
+				//dialogue.append("\nThe house stays.");
 				bust = true;
 			}
 			else {
 				Card draw;
 				this.getHand().addCard(draw = deck.getNextCard());
-				dialogue.append("\nThe house drew " + draw.toString());
-				table.redrawDealerCards(table);
+				print.print("The house drew " + draw.toString());
+				//dialogue.append("\nThe house drew " + draw.toString());
+				print.redraw();
+				//table.redrawDealerCards(table);
 			}
 		}
 	}
