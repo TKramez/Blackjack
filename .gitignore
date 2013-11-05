@@ -1,6 +1,7 @@
 # Java Files
 *.class
 *.jar
+/target
 
 # Eclipse Stuff
 /.classpath
@@ -10,3 +11,4 @@
 
 # Dumb stuff
 /.DS_Store
+/target
